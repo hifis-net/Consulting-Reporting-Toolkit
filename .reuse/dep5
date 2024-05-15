@@ -1,0 +1,35 @@
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: Consulting Reporting
+Upstream-Contact: Thomas Förster <thomas.foerster@hzdr.de>
+Source: 
+
+# Sample paragraph, commented out:
+
+Files: 
+    src/*
+    reports/*.yml
+    .gitlab-ci.yml
+    .vscode/launch.json
+    .yamllint.yml
+    poetry.lock
+    poetry.toml
+    pyproject.toml
+    templates/*.json
+    templates/*.yml
+Copyright: 2024 Helmholtz-Zentrum Dresden-Rossendorf (HZDR)
+License: MIT
+
+Files: 
+    .gitignore
+    .python-version
+Copyright: 2024 Helmholtz-Zentrum Dresden-Rossendorf (HZDR)
+License: CC0-1.0
+
+Files:
+    README.md
+    templates/README.md
+    .gitlab/merge_request_templates/default.md
+    doc/img/streamlit_showcase.png
+Copyright: 2024 Helmholtz-Zentrum Dresden-Rossendorf (HZDR)
+License: CC-BY-4.0
+

@@ -149,15 +149,13 @@ When also the required GUI libraries are installed you have two additional comma
 
 ```
 $ reporting --help
-╭─ Commands ────────────────────────────────────────────────────────╮
-│ analysis   Extract most import information for reporting.         │
-│ create     Creates a report via a HTML interface                  │
-│ lint       Checks if the yaml files are linted correctly.         │
-│ plot       Creates a HTML file with plots based on the CLI        │
-│            analysis output.                                       │
-│ validate   Validates the overall consistency of the presented     │
-│            reports.                                               │ 
-╰───────────────────────────────────────────────────────────────────╯
+╭─ Commands ──────────────────────────────────────────────────────────────────╮
+│ analysis   Extract most import information for reporting.                   │
+│ create     Creates a report via a HTML interface                            │
+│ lint       Checks if the yaml files are linted correctly.                   │
+│ plot       Creates a HTML file with plots based on the CLI analysis output. │
+│ validate   Validates the overall consistency of the presented reports.      │
+╰─────────────────────────────────────────────────────────────────────────────╯
 ```
 
 #### `create` Command
@@ -181,20 +179,20 @@ When utilizing the `plot` command you have the following options available:
 
  Creates a HTML with plots based on the CLI analysis output.         
 
-╭─ Options ─────────────────────────────────────────────────────────╮
-│ --destination        FILE     [default: reports.html]             │
-│ --reports            PATH     [default: reports]                  │
-│ --year               INTEGER  [default: 2024]                     │
-│ --center             TEXT     [default: all]                      │
-│ --help                        Show this message and exit.         │
-╰───────────────────────────────────────────────────────────────────╯
+╭─ Options ───────────────────────────────────────────────────────────────────╮
+│ --destination        FILE     [default: reports.html]                       │
+│ --reports            PATH     [default: reports]                            │
+│ --year               INTEGER  [default: 2024]                               │
+│ --center             TEXT     [default: all]                                │
+│ --help                        Show this message and exit.                   │
+╰─────────────────────────────────────────────────────────────────────────────╯
 ```
 
-!!! example
+**Example**
 
-    ```
-    $ reporting plot --year 2023 --center DLR
-    ```
+```
+$ reporting plot --year 2023 --center DLR
+```
 
 <!--===============-->
 <!--=== SECTION ===-->
@@ -207,7 +205,7 @@ For extracting license information of any `FILE`, use:
 
 ``` sh
 $ poetry install --only dev
-$ reuse --suppress-deprecation spdx | grep --after-context 5 FILE
+$ poetry run reuse --suppress-deprecation spdx | grep --after-context 5 FILE
 ```
 
 The license information are stored in `.reuse/dep5`.
@@ -215,6 +213,6 @@ The license information are stored in `.reuse/dep5`.
 To check the compliance of the project with REUSE version 3, you run the following:
 
 ```
-$ reuse lint
+$ poetry run reuse lint
 ```
 
