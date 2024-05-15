@@ -21,7 +21,7 @@ About 20 fields are supposed to be filled by a consultant for the report creatio
     1. **Organisation**: Knowledge about tools, processes, contact persons, etc. of the organisation.
 1. **start_date**: Filing date of the ticket as per ISO 8601 Data elements and interchange formats. _(yyyy-mm--dd)_
 1. **end_date**: Date of closure as per ISO 8601 Data elements and interchange formats. _(yyyy-mm--dd)_
-1. **survey_sent** Indicates that a survey was sent. Valid values are positive integers and zero. In case it was decided not to sent a survey, the selected value is 0.
+1. **survey_sent:** Describes the number of surveys sent. Valid values are positive integers and zero. If no survey was sent, select the value 0.
 1. **estimated_workload**: Estimated workload given in less or equal `days` until the request will be finished.
 1. **final_workload**:  Approximated final workload given in less or equal `days` after the request was closed.
 1. **workload_percentage_distribution**: Approximated distribution of workflow in percentage.
