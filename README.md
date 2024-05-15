@@ -1,9 +1,15 @@
-# Consulting Reports (CR)
+# Consulting Reports Toolkit
 
 This repository holds all compiled consulting reports.
 
 Final reports are saved within the *reports* folder.
 The [template report](templates/structured_report_template.yml) and the [template description](templates/README.md) can be found in the *templates* folder.
+
+
+<!--===============-->
+<!--=== SECTION ===-->
+<!--===============-->
+## License
 
 ## Contribute a report
 
@@ -17,8 +23,11 @@ Please follow these steps to compile one or more reports:
 
 > ℹ️ The [Consulting Handbook](https://hifis.net/consulting-handbook/) gives you more information on how the report is structured.
 
+
 ### Prerequisites
+
 - Install [Poetry](https://python-poetry.org/docs/#installation) for dependency management.
+
 
 ### Installation
 
@@ -143,6 +152,7 @@ After installing the package in your python environment your can access `cr_anal
 
 `dataset` stores the requested information in a pandas dataframe. With this you can simply create different analysis and output formats. 
 
+
 ### Usage of the GUI elements
 
 When also the required GUI libraries are installed you have two additional commands available for `reporting`, `plot` and `create`.
@@ -158,6 +168,7 @@ $ reporting --help
 ╰─────────────────────────────────────────────────────────────────────────────╯
 ```
 
+
 #### `create` Command
 
 When you use:
@@ -169,6 +180,7 @@ $ reporting create
 a browser window should open automatically that displays the form. Alternatively, you can manually open a browser and enter the address that is displayed in the console.
 
 <img alt="2023-10-16 14_19_25-ui · Streamlit.png" src="doc/img/streamlit_showcase.png" width="500"/>
+
 
 #### `plot` Command
 

@@ -9,7 +9,7 @@ variables:
   # Set the registry URL based on your GitLab project ID
   POETRY_REPOSITORY: "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/pypi"
 
-before_script:
+.build_before_script: &build_before_script
   - pip install --upgrade pip
   - pip install poetry
   - poetry install --only main
@@ -17,20 +17,32 @@ before_script:
 lint:
   stage: lint
   script:
+    - *build_before_script
     - poetry run reporting lint
 
 validate:
   stage: validate
   script:
+    - *build_before_script
     - poetry run reporting validate
 
 
 publish:
   stage: publish
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_REF_NAME == "main"
+        #- if: $CI_PIPELINE_SOURCE == "merge_request_event" && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "main" && 
+        #when: always
   script:
-    - poetry build --format wheel
-    - poetry config repositories.gitlab ${POETRY_REPOSITORY}
-    - poetry publish --username gitlab-ci-token --password ${CI_JOB_TOKEN} --repository gitlab
-  only:
-    - tags
-
+    - CURRENT_VERSION=$(grep version pyproject.toml | awk -F\" '{print $2}'); echo $CURRENT_VERSION
+    - PREVIOUS_VERSION=$(git show HEAD~1:pyproject.toml | grep version | awk -F\" '{print $2}'); echo $PREVIOUS_VERSION
+    - if [[ "$PREVIOUS_VERSION" != "$CURRENT_VERSION" ]]; then 
+        poetry build --format wheel;
+        poetry config repositories.gitlab ${POETRY_REPOSITORY};
+        poetry publish --username gitlab-ci-token --password ${CI_JOB_TOKEN} --repository gitlab;
+        echo "Version has changed";
+      else 
+        echo "Nothing published.";
+      fi
+      #  only:
+      #- main
