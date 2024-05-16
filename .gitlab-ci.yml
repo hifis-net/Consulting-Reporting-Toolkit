@@ -9,21 +9,22 @@ variables:
   # Set the registry URL based on your GitLab project ID
   POETRY_REPOSITORY: "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/pypi"
 
-.build_before_script: &build_before_script
-  - pip install --upgrade pip
-  - pip install poetry
-  - poetry install --only main
+.install_dependencies: &install_dependencies
+  before_script:
+    - pip install --upgrade pip
+    - pip install poetry
+    - poetry install --only main
 
 lint:
   stage: lint
+  extends: .install_dependencies
   script:
-    - *build_before_script
     - poetry run reporting lint
 
 validate:
   stage: validate
+  extends: .install_dependencies
   script:
-    - *build_before_script
     - poetry run reporting validate
 
 
@@ -37,6 +38,7 @@ publish:
     - CURRENT_VERSION=$(grep version pyproject.toml | awk -F\" '{print $2}'); echo $CURRENT_VERSION
     - PREVIOUS_VERSION=$(git show HEAD~1:pyproject.toml | grep version | awk -F\" '{print $2}'); echo $PREVIOUS_VERSION
     - if [[ "$PREVIOUS_VERSION" != "$CURRENT_VERSION" ]]; then 
+        *install_dependencies
         poetry build --format wheel;
         poetry config repositories.gitlab ${POETRY_REPOSITORY};
         poetry publish --username gitlab-ci-token --password ${CI_JOB_TOKEN} --repository gitlab;
