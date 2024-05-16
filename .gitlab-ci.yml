@@ -46,11 +46,11 @@ publish:
     - CURRENT_VERSION=$(grep version pyproject.toml | awk -F\" '{print $2}'); echo $CURRENT_VERSION
     - PREVIOUS_VERSION=$(git show $INITIAL_BRANCH_COMMIT:pyproject.toml | grep version | awk -F\" '{print $2}'); echo $PREVIOUS_VERSION
     - if [[ "$PREVIOUS_VERSION" != "$CURRENT_VERSION" ]]; then 
-        pip install --upgrade pip
-        pip install poetry
-        poetry build --format wheel
-        poetry config repositories.gitlab ${POETRY_REPOSITORY}
-        poetry publish --username gitlab-ci-token --password ${CI_JOB_TOKEN} --repository gitlab
+        pip install --upgrade pip;
+        pip install poetry;
+        poetry build --format wheel;
+        poetry config repositories.gitlab ${POETRY_REPOSITORY};
+        poetry publish --username gitlab-ci-token --password ${CI_JOB_TOKEN} --repository gitlab;
         echo "Version has changed";
       else 
         echo "Nothing published.";
