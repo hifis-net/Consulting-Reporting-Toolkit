@@ -1,16 +1,10 @@
 image: python:3.12
 
 
-stages:
-  - publish
-  - lint
-  - validate
-
 
 variables:
   # Set the registry URL based on your GitLab project ID
   POETRY_REPOSITORY: "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/pypi"
-
 
 .install_dependencies: &install_dependencies_anchor
   before_script:
@@ -20,7 +14,7 @@ variables:
 
 
 lint:
-  stage: lint
+  needs: []
   rules:
     - if: $CI_COMMIT_REF_NAME != "main"
   extends: .install_dependencies
@@ -29,7 +23,7 @@ lint:
 
 
 validate:
-  stage: validate
+  needs: []
   rules:
     - if: $CI_COMMIT_REF_NAME != "main"
   extends: .install_dependencies
@@ -38,7 +32,7 @@ validate:
 
 
 publish:
-  stage: publish
+  needs: []
   rules:
     - if: $CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_REF_NAME == "main"
   script:
@@ -56,4 +50,6 @@ publish:
       else 
         echo "Nothing published.";
       fi
+
+
 
