@@ -37,7 +37,7 @@ publish:
     - if: $CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_REF_NAME == "main"
   script:
     - CURRENT_VERSION=$(grep version pyproject.toml | awk -F\" '{print $2}'); echo $CURRENT_VERSION
-    - PREVIOUS_VERSION=$(git show HEAD~1:pyproject.toml | grep version | awk -F\" '{print $2}'); echo $PREVIOUS_VERSION
+    - PREVIOUS_VERSION=$(git show main:pyproject.toml | grep version | awk -F\" '{print $2}'); echo $PREVIOUS_VERSION
     - if [[ "$PREVIOUS_VERSION" != "$CURRENT_VERSION" ]]; then *install_dependencies_anchor; fi
     - if [[ "$PREVIOUS_VERSION" != "$CURRENT_VERSION" ]]; then 
         pip install --upgrade pip
@@ -50,6 +50,4 @@ publish:
       else 
         echo "Nothing published.";
       fi
-
-
 

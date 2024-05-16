@@ -229,4 +229,3 @@ To check the compliance of the project with REUSE version 3, you run the followi
 $ poetry run reuse lint
 ```
 
-
