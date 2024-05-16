@@ -1,28 +1,37 @@
 image: python:3.12
 
+
 stages:
   - publish
   - lint
   - validate
 
+
 variables:
   # Set the registry URL based on your GitLab project ID
   POETRY_REPOSITORY: "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/pypi"
 
-.install_dependencies: &install_dependencies
+
+.install_dependencies: &install_dependencies_anchor
   before_script:
     - pip install --upgrade pip
     - pip install poetry
     - poetry install --only main
 
+
 lint:
   stage: lint
+  rules:
+    - if: $CI_COMMIT_REF_NAME != "main"
   extends: .install_dependencies
   script:
     - poetry run reporting lint
 
+
 validate:
   stage: validate
+  rules:
+    - if: $CI_COMMIT_REF_NAME != "main"
   extends: .install_dependencies
   script:
     - poetry run reporting validate
@@ -32,13 +41,14 @@ publish:
   stage: publish
   rules:
     - if: $CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_REF_NAME == "main"
-        #- if: $CI_PIPELINE_SOURCE == "merge_request_event" && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "main" && 
-        #when: always
   script:
     - CURRENT_VERSION=$(grep version pyproject.toml | awk -F\" '{print $2}'); echo $CURRENT_VERSION
     - PREVIOUS_VERSION=$(git show HEAD~1:pyproject.toml | grep version | awk -F\" '{print $2}'); echo $PREVIOUS_VERSION
+    - if [[ "$PREVIOUS_VERSION" != "$CURRENT_VERSION" ]]; then *install_dependencies_anchor; fi
     - if [[ "$PREVIOUS_VERSION" != "$CURRENT_VERSION" ]]; then 
-        *install_dependencies
+        pip install --upgrade pip
+        pip install poetry
+        poetry install --only main
         poetry build --format wheel;
         poetry config repositories.gitlab ${POETRY_REPOSITORY};
         poetry publish --username gitlab-ci-token --password ${CI_JOB_TOKEN} --repository gitlab;
@@ -46,5 +56,4 @@ publish:
       else 
         echo "Nothing published.";
       fi
-      #  only:
-      #- main
+
