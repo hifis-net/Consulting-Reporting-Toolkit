@@ -1,8 +1,11 @@
 image: python:3.12
 
+stages:
+  - base
+
 variables:
-  # Set the registry URL based on your GitLab project ID
   POETRY_REPOSITORY: "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/pypi"
+
 
 .install_dependencies: &install_dependencies_anchor
   before_script:
@@ -12,6 +15,8 @@ variables:
 
 
 lint:
+  #needs: []
+  stage: base
   rules:
     - if: $CI_COMMIT_REF_NAME != "main"
   extends: .install_dependencies
@@ -20,6 +25,8 @@ lint:
 
 
 validate:
+  #needs: []
+  stage: base
   rules:
     - if: $CI_COMMIT_REF_NAME != "main"
   extends: .install_dependencies
@@ -28,13 +35,15 @@ validate:
 
 
 publish:
+  #needs: []
+  stage: base
   rules:
     - if: $CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_REF_NAME == "main"
   script:
-    - git branch --show-current
-    - INITIAL_BRANCH_COMMIT=$(git log --all --decorate --oneline --graph --abbrev-commit | grep Merge | head -n 1 | awk '{print $2}')
-    - echo $INITIAL_BRANCH_COMMIT
+    - TMP=$(git log --all --decorate --oneline --graph --abbrev-commit | grep Merge | awk -F\' '{ print $2 }' | awk '!seen[$0]++ { if (NR > 1) print }' | head -n 1)
+    - INITIAL_BRANCH_COMMIT=$(git log --all --decorate --oneline --graph --abbrev-commit | grep $TMP | head -n 1 | awk '{print $2}')
     - git log --all --decorate --oneline --graph --abbrev-commit
+    - echo $INITIAL_BRANCH_COMMIT
     - CURRENT_VERSION=$(grep version pyproject.toml | awk -F\" '{print $2}'); echo $CURRENT_VERSION
     - PREVIOUS_VERSION=$(git show $INITIAL_BRANCH_COMMIT:pyproject.toml | grep version | awk -F\" '{print $2}'); echo $PREVIOUS_VERSION
     - if [[ "$PREVIOUS_VERSION" != "$CURRENT_VERSION" ]]; then 
