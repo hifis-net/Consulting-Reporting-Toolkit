@@ -29,7 +29,38 @@ Please follow these steps to compile one or more reports:
 - Install [Poetry](https://python-poetry.org/docs/#installation), as a dependency manager for this project.
 
 
+
 ### Installation
+
+#### In your `poetry` project
+
+- Navigate to the root of your `poetry` project
+
+- Add reporting source URL to your `poetry` project
+
+    ```
+    $ poetry source add \
+        --priority=supplemental \
+        creporting \
+        https://codebase.helmholtz.cloud/api/v4/projects/5219/packages/pypi/simple
+    ```
+
+- Install the package
+
+    ```
+    $ poetry add --source creporting reporting
+    ```
+
+#### In your python project via `pip`
+
+- Using the `pip` command
+
+    ```
+    $ pip install reporting --index-url https://codebase.helmholtz.cloud/api/v4/projects/5219/packages/pypi/simple
+    ```
+
+
+#### Utilizing the repo
 
 1. Navigate to the repository directory.
 2. Install the CLI dependencies and create a virtual environment for the project by running:
